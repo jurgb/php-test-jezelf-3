@@ -1,5 +1,6 @@
 <?php 
-include("products.include.php");
+	session_start();
+	include("products.include.php");
 
 ?><!doctype html>
 <html lang="en">
@@ -8,18 +9,15 @@ include("products.include.php");
 	<title>Test jezelf 3</title>
 </head>
 <body>
-	<?php
-	echo "<ul id='productenlijst'>";
-		foreach ($producten as $product) 
-		{
-			echo "<li>";
-			echo "<img class='product' src='" . $product[photo] . "'</img><br/>";
-			echo "<a href='details.php?trui=". $product[name]."'>Meer info</a>";
-			echo "</li>";
-		}
-	echo "</ul>";
-
-	?>
+	<!-- Het is niet proper om bv een "<li>" te echo'en. Joris Hens gaat hier punten voor aftrekken dus je kan het beter meteen juist doen :) -->
+	<ul id='productenlijst'>
+		<?php foreach ($producten as $product) { ?>
+			<li>
+				<img class='product' src='<?php echo $product['photo']; ?>'</img><br/>
+				<a href='details.php?trui=<?php echo $product['name'];?>'>Meer info</a>
+			</li>
+		<?php } ?>
+	</ul>
 	
 	<h1>Uw winkelwagentje</h1>
 

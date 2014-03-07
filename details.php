@@ -1,15 +1,24 @@
 <?php
+	session_start(); // Sessie altijd best bovenaan de pagina's starten. Dan hebt ge minder conflicten met includes :)
+	
 	include("products.include.php");
 	$trui = $_GET['trui'];
 
 
 	if(!empty($_POST))
 	{
+		$productcode = $_POST['trui'];
 		
-		$productcode = $_POST[trui];
-		session_start(); // dit linkt uw sessie aan uzelf
-		$_SESSION['cart'] = array();
-		array_push($_SESSION['cart'],$productcode);
+		 // Kijken of de sessie bestaat en of deze niet leeg is
+		if(isset($_SESSION['cart']) && !empty($_SESSION['cart']))
+		{
+			// Item toevoegen aan de sessie
+			array_push($_SESSION['cart'],$productcode);
+		} else {
+			// Als de sessie niet bestaat, hier een array met 1 product code inzetten
+			$_SESSION['cart'] = array($productcode);
+		}
+		
 		header("location: product.php");
 	}
 
@@ -21,16 +30,12 @@
 	<title>Document</title>
 </head>
 <body>
-	<?php 
-		foreach ($producten as $product) 
-		{
-			if ($product[name] == $trui) {
-				echo "<img class='product' src='" . $product[photo] . "'</img><br/>";
-				echo "<h1>Extra info over trui ". $trui ."</h1>";
-				echo "<p class='info'>" . $product[info] . "</p>";
-			}
-		}
-	?>
+	<?php foreach ($producten as $product) {
+		if ($product['name'] == $trui) { ?>
+			<img class='product' src='<?php echo $product['photo']; ?>'</img><br/>
+			<h1>Extra info over trui <?php echo $trui; ?></h1>
+			<p class='info'><?php echo $product['info'] ?></p>
+	<?php } } ?>
 
 	<form action='' method='post'>
 		<input type="hidden" name="trui" value="<?php echo $trui ?>">
